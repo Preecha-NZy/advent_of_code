@@ -15,16 +15,11 @@ end
 
 def find_part_number_position(inputs, i, j)
   part_number_position = []
-  for row in i-1..i+1
-    for col in j-1..j+1
-      if row >= 0 && col >= 0 && row < inputs.length && col < inputs[row].length && inputs[row][col].match(/\d/)
-        while col >= 0 && inputs[row][col].match(/\d/)
-          col -= 1
-        end
-        if !part_number_position.include?([row, col+1])
-          part_number_position << [row, col+1]
-        end
-      end
+  (i-1..i+1).each do |row|
+    (j-1..j+1).each do |col|
+      next if row < 0 || col < 0 || row >= inputs.length || col >= inputs[row].length || !inputs[row][col].start_with?(/\d/)
+      col -= 1 while col >= 0 && inputs[row][col].start_with?(/\d/)
+      part_number_position << [row, col+1] unless part_number_position.include?([row, col+1])
     end
   end
 
@@ -35,7 +30,7 @@ end
 def find_part_number(inputs, row, col)
   part_number = ""
   while col < inputs[row].length && inputs[row][col].match(/\d/)
-    part_number += inputs[row][col]
+    part_number << inputs[row][col]
     col += 1
   end
   return part_number
