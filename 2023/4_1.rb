@@ -8,22 +8,10 @@ Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11".split("\n")
 ans = 0
 
 inputs.each.with_index do |line, index|
-  winning_point = 0
-
   card, numbers = line.split(":")
-  winning_number, your_number = numbers.split("|")
-  winning_number = winning_number.split(" ").map(&:to_i)
-  your_number.split(" ").map(&:to_i).each do |number|
-    if winning_number.include?(number)
-      winning_point += 1
-    end
-  end
-
-  if winning_point > 0
-    # puts "Card #{index+1}: #{winning_point} point(s)"
-    # puts "You won #{winning_point > 1 ? 2 ** (winning_point-1) : 1} dollar(s)"
-    ans += winning_point > 1 ? 2 ** (winning_point-1) : 1
-  end
+  winning_number, your_number = numbers.split("|").map { |nums| nums.split.map(&:to_i) }
+  point = your_number.count { |number| winning_number.include?(number) }
+  ans += point > 1 ? 2 ** (point-1) : point
 end
 
 puts ans
