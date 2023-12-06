@@ -9,11 +9,13 @@ distance = distances.inject{ |sum, n| sum.to_s + n.to_s }.to_i
 
 puts "#{time} #{distance}"
 
-winning_time = 0
+start_winning = 0
 time.times do |t|
   if (time - t) * t > distance
-    winning_time += 1
+    start_winning = t
+    break
   end
 end
 
-puts winning_time
+winning_probability = (time + 1) - start_winning * 2
+puts winning_probability
