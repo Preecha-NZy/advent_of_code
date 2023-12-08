@@ -55,23 +55,21 @@ end
 hands, points = inputs.map { |line| line.split }.transpose
 points.map!(&:to_i)
 
-card_type_point = []
-
 hand_with_type = hands.map do |cards|
   [type_of_hand(cards), cards, points[hands.index(cards)]]
 end
 
-sorted_hand = hand_with_type.sort_by do |type, hand|
-  a = hand.chars.map do |card|
+sorted_hand = hand_with_type.sort_by do |type, hand, _|
+  cards = hand.chars.map do |card|
     is_digit(card) ? card.to_i : CARD_MAP[card]
   end
-  [type, a]
+  [type, cards]
 end
 
 # puts sorted_hand.inspect
 
-total_point = sorted_hand.each_with_index.map do |hand, index|
-  hand[2].to_i * (index + 1)
-end.reduce(:+)
+total_point = sorted_hand.map.with_index(1) do |(_, _, point), index|
+  point * index
+end.sum
 
 puts total_point
