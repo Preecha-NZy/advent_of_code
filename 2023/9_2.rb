@@ -6,18 +6,15 @@ ans = 0
 inputs.each do |line|
   prev_line = line.split(" ").reverse.map(&:to_i)
   last_value = []
-  result = 0
 
   loop do
     next_line = prev_line.each_cons(2).map { |a, b| a - b }
     last_value << prev_line.last
     prev_line = next_line
+
     if next_line.all? { |n| n == 0 }
       puts "last_value: #{last_value.inspect}"
-      last_value.reverse_each do |n|
-        result = n - result
-      end
-      ans += result
+      ans += last_value.reverse.inject { |a, b| b - a}
       break
     end
   end
